@@ -1,0 +1,86 @@
+﻿<header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+    <a class="navbar-brand mr-0 mr-md-2" href="/">Переводчик языков</a>
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item  active">
+            <a class="nav-link" href="/">2 языка программирования</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/">Несколько языков программирования</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/">Перевод с файла</a>
+        </li>
+    </ul>
+</header>
+<div class="container  mainwin" id="app">
+    <div class="row">
+        <div class="col-6 translater">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Язык:</h5>
+                    <select v-model="lang1" class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                        <option value="Pascal" selected>Pascal</option>
+                        <option value="C#">C#</option>
+                        <option value="Python">Python</option>
+                        <option value="C++">C++</option>
+                    </select>
+                </div>
+                <div class="card-body">
+                    <!-- <textarea v-model="text1" class="form-control"  v-on:input="translate"></textarea> -->
+                    <textarea v-model="text1" class="form-control"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 translater">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Язык:</h5>
+                    <select v-model="lang2" class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                        <option value="C#" selected>C#</option>
+                        <option value="Pascal">Pascal</option>
+                        <option value="Python">Python</option>
+                        <option value="C++">C++</option>
+                    </select>
+                </div>
+                <div class="card-body">
+                    <textarea v-model="text2" class="form-control">{{text2}}
+                            </textarea>
+
+                </div>
+            </div>
+        </div>
+        <div class="row translater">
+            <input class="btn btn-primary" v-on:click="translate" type="button" value="Перевести">
+        </div>
+    </div>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            lang1: '',
+            lang2: '',
+            text1: '',
+            text2: ''
+        },
+        methods: {
+            translate: function (event) {
+                txt2 = "";
+                fetch("/Home/Translate", {
+                    method: 'post',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ lang1: this.lang1, lang2: this.lang2, text1: this.text1 })
+                }).then(res => res.json())
+                    .then(
+                        (result) => {
+                            txt2 = result;
+                            this.text2 = result;
+                        })
+                    .catch(function (error) {
+                        console.log('Request failed', error);
+                    });
+            }
+        }
+    })
+</script>

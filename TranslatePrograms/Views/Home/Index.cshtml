@@ -1,0 +1,196 @@
+﻿<div id="app">
+    <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+        <a class="navbar-brand mr-0 mr-md-2" href="/">Переводчик языков</a>
+
+        <div class="headdiv">
+            <div class="form-group1">
+                <input v-on:click="alllang=!alllang" type="checkbox" name="fancy-checkbox-success" id="fancy-checkbox-success" autocomplete="off" />
+                <div class="btn-group">
+                    <label for="fancy-checkbox-success" class="btn btn-success">
+                        <span><i class="fas fa-check" aria-hidden="true"></i></span>
+                        <span> </span>
+                    </label>
+                    <label for="fancy-checkbox-success" class="btn btn-success active">
+                        Отобразить перевод сразу всех языков
+                    </label>
+                </div>
+            </div>
+        </div>
+        @*<div class="headdiv">
+                <button class="btn btn-success"  id="show-modal" @@click="showModal = true"><i class="fas fa-upload" aria-hidden="true"></i></button>
+            </div>*@
+        @*<div class="headdiv">
+                <button class="btn btn-success"><i class="fas fa-download" aria-hidden="true"></i></button>
+            </div>*@
+
+        @*<div class="checkdiv">
+                <input v-on:click="alllang=!alllang" type="checkbox" class="checkbox" id="checkbox" />
+                <label for="checkbox">Отобразить перевод сразу всех языков</label>
+            </div>*@
+    </header>
+    <div v-if="alllang" class="container  mainwin">
+        <form method="post" action="/Home/downloadmany">
+            <div class="row">
+
+                <div v-for="lang in langs" class="col-3 translater">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">
+                                {{lang.name}}
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <textarea v-bind:name="lang.name=='C#'?'Csharp':(lang.name=='C++'?'Cpp':lang.name)" v-model="lang.text" class="form-control">{{lang.text}}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row translater">
+                    <input class="btn btn-primary col-11" v-on:click="alltranslate" type="button" value="Перевести">
+                    <button type="submit" class="btn btn-outline-primary col-1"><i class="fas fa-download" aria-hidden="true"></i></button>
+
+
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <div v-else class="container  mainwin">
+        <div class="row">
+            <div class="col-6 translater">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Язык:</h5>
+                        <select v-model="lang1" class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                            <option value="Pascal" selected>Pascal</option>
+                            <option value="C#">C#</option>
+                            <option value="Python">Python</option>
+                            <option value="C++">C++</option>
+                        </select>
+                    </div>
+                    <div class="card-body">
+                        <!-- <textarea v-model="text1" class="form-control"  v-on:input="translate"></textarea> -->
+                        <textarea v-model="text1" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 translater">
+
+                <form method="post" action="/Home/downloadone">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Язык:</h5>
+                            <select name="pname" v-model="lang2" class="custom-select mr-sm-2 col-10" id="inlineFormCustomSelect">
+                                <option value="C#" selected>C#</option>
+                                <option value="Pascal">Pascal</option>
+                                <option value="Python">Python</option>
+                                <option value="C++">C++</option>
+                            </select>
+                            <button class="btn btn-outline-primary"><i class="fas fa-download" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="card-body">
+                            <textarea name="ptext" v-model="text2" class="form-control">{{text2}}
+                            </textarea>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row translater">
+                <input class="btn btn-primary" v-on:click="translate" type="button" value="Перевести">
+            </div>
+        </div>
+    </div>
+    <modal v-if="showModal" @@close="showModal = false">
+        <!--
+          you can use custom content here to overwrite
+          default content
+        -->
+        <h3 slot="header">Конвертирование с файла</h3>
+    </modal>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script>
+    Vue.component("modal", {
+        template: "#modal-template"
+    });
+    var app = new Vue({
+        el: '#app',
+        data: {
+            showModal: false,
+            lang1: '',
+            lang2: '',
+            text1: '',
+            text2: '',
+            alllang: false,
+            langs: [{ name: 'C#', text: '' }, { name: 'Pascal', text: '' }, { name: 'Python', text: '' }, { name: 'C++', text: '' }]
+        },
+        methods: {
+            translate: function (event) {
+                txt2 = "";
+                fetch("/Home/Translate", {
+                    method: 'post',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ lang1: this.lang1, lang2: this.lang2, text1: this.text1 })
+                }).then(res => res.json())
+                    .then(
+                        (result) => {
+                            // txt2 = result;
+                            this.text2 = result;
+                        })
+                    .catch(function (error) {
+                        console.log('Request failed', error);
+                    });
+            },
+            alltranslate: function (event) {
+                txt2 = "";
+                fetch("/Home/allTranslate", {
+                    method: 'post',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ langs: this.langs })
+                }).then(res => res.json())
+                    .then(
+                        (result) => {
+                            //txt2 = result;
+                            this.langs = result;
+                        })
+                    .catch(function (error) {
+                        console.log('Request failed', error);
+                    });
+            },
+            download_list: function (event) {
+                txt2 = "";
+                fetch("/Home/downloadmany", {
+                    method: 'post',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ l: this.langs })
+                })
+                //.then(res => res.json())
+                //.then(
+                //    (result) => {
+                //        //txt2 = result;
+                //        this.langs = result;
+                //    })
+                //.catch(function (error) {
+                //    console.log('Request failed', error);
+                //});
+            },
+            translatefile: function (event) {
+                txt2 = "";
+                fetch("/Home/Upload", {
+                    method: 'post',
+                    headers: { 'Content-Type': 'false' },
+                    body: this.filecode
+                })
+                //.then(res => res.json())
+                //.then(
+                //    (result) => {
+                //        //txt2 = result;
+                //        this.langs = result;
+                //    })
+                //.catch(function (error) {
+                //    console.log('Request failed', error);
+                //});
+            },
+        }
+    })
+</script>

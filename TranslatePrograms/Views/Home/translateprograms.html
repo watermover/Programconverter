@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>Переводчик языков</title>
+<meta charset="utf-8" />
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+        <a class="navbar-brand mr-0 mr-md-2" href="/">Переводчик языков</a>
+        <a class="navbar-brand mr-0 mr-md-2" href="/">2 языка программирования</a>
+        <a class="navbar-brand mr-0 mr-md-2" href="/">Несколько языков программирования</a>
+        <a class="navbar-brand mr-0 mr-md-2" href="/">Перевод с файла</a>
+    </header>
+<div class="container  mainwin" id="app">
+<div class="row">
+    <div class="col-6 translater">
+            <div class="card">
+                    <div class="card-header">
+                            <h5 class="card-title">Язык:</h5>
+                            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                                    <option selected>C#</option>
+                                    <option value="1">Python</option>
+                                    <option value="2">C++</option>
+                                    <option value="3">JavaScript</option>
+                                  </select>
+                    </div>
+                    <div class="card-body">
+                            <textarea class="form-control"  v-on:input="setMessage"></textarea>
+                    </div>
+    </div>      
+</div>
+    <div class="col-6 translater">
+            <div class="card">
+                    <div class="card-header">
+                            <h5 class="card-title">Язык:</h5>
+                            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                                    <option selected>C++</option>
+                                    <option value="1">Python</option>
+                                    <option value="2">C#</option>
+                                    <option value="3">JavaScript</option>
+                                  </select>
+                    </div>
+                    <div class="card-body">
+                            <textarea class="form-control" >{{message}}
+                            </textarea>
+                      
+                    </div>
+    </div>
+</div>  
+<div class="row translater">
+        <input class="btn btn-primary" type="button" value="Перевести">
+</div>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: ''
+        },
+        methods: {
+            setMessage: function(event){
+                
+                this.message = event.target.value;
+            }
+        }
+    })
+</script>
+</body>
+</html>

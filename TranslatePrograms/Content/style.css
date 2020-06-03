@@ -1,0 +1,126 @@
+
+header{
+    background-color: dodgerblue;
+}
+.mainwin{
+    margin: auto;
+    padding-top: 1vw;
+}
+.translater{
+    margin: auto ;
+    padding: auto;
+}
+.row.translater{
+    margin-top: 0.4vw;     
+    margin-bottom: 0.4vw;    
+    margin-right: 15%;    
+    margin-left: 15%;
+    width: 100%
+}
+.row.translater input{
+
+    width: 100%
+}
+
+textarea{
+    min-height:30vh;
+}
+
+.headdiv{
+    margin-left:1vw;
+}
+.btn-success {
+    margin-bottom: 0;
+}
+
+
+.form-group1 input[type="checkbox"] {
+    display: none;
+}
+
+    .form-group1 input[type="checkbox"] + .btn-group > label span {
+        width: 20px;
+    }
+
+        .form-group1 input[type="checkbox"] + .btn-group > label span:first-child {
+            display: none;
+        }
+
+        .form-group1 input[type="checkbox"] + .btn-group > label span:last-child {
+            display: inline-block;
+        }
+
+    .form-group1 input[type="checkbox"]:checked + .btn-group > label span:first-child {
+        display: inline-block;
+    }
+
+    .form-group1 input[type="checkbox"]:checked + .btn-group > label span:last-child {
+        display: none;
+    }
+
+
+
+
+.modal-mask {
+    position: fixed;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: table;
+    transition: opacity 0.3s ease;
+}
+
+.modal-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.modal-container {
+    width: 40vw;
+    margin: 0px auto;
+    padding: 20px 30px;
+    background-color: #fff;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+    transition: all 0.3s ease;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.modal-header h3 {
+    margin-top: 0;
+    color: #1e90ff;
+}
+
+.modal-body {
+    margin: 20px 0;
+}
+
+.modal-default-button {
+    float: right;
+}
+
+/*
+ * The following styles are auto-applied to elements with
+ * transition="modal" when their visibility is toggled
+ * by Vue.js.
+ *
+ * You can easily play with the modal transition by editing
+ * these styles.
+ */
+
+.modal-enter {
+    opacity: 0;
+}
+
+.modal-leave-active {
+    opacity: 0;
+}
+
+    .modal-enter .modal-container,
+    .modal-leave-active .modal-container {
+        -webkit-transform: scale(1.1);
+        transform: scale(1.1);
+    }
